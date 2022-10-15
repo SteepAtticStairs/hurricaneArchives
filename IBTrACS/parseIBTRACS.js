@@ -65,7 +65,9 @@ var curName;
 var curID;
 var wantedRows = ['SID', 'SEASON', 'BASIN', 'SUBBASIN', 'USA_ATCF_ID', 'NAME', 'ISO_TIME', 'LAT', 'LON', 'NATURE', 'WMO_WIND', 'WMO_PRES', 'USA_WIND', 'USA_PRES', 'WMO_AGENCY']
 for (var i = 0; i <= rows.length; i++) {
-    //process.stdout.write(`Parsing row ${i}\r`);
+    if (i % 100 == 0) {
+        process.stdout.write(`Parsing row ${i}\r`);
+    }
     try {
         // 609283
         var curRow = rows[i].split(',');
@@ -78,12 +80,12 @@ for (var i = 0; i <= rows.length; i++) {
         }
         var newObj = {};
         for (var n in curRow) {
-            if (wantedRows.includes(header[n])) {
+            if (!(curRow[n].replace(/ /g, '') == '')) {
                 newObj[header[n]] = curRow[n];
             }
         }
         obj[curName].push(newObj)
-        fs.writeFileSync(`./storms/${curID}.json`, JSON.stringify(obj[curName]));
+        //fs.writeFileSync(`./storms/${curID}.json`, JSON.stringify(obj[curName]));
     } catch (e) {
         //uugh
     }
@@ -109,6 +111,6 @@ for (var i in keys) {
 var end = Date.now();
 //console.log(findStorm('IDA', '2021', 'NA', '2021239N17281'))
 //console.log(obj['IDA_2021'])
-fs.writeFileSync('ibtracsArchive.json', JSON.stringify(obj));
+//fs.writeFileSync('ibtracsArchive.json', JSON.stringify(obj));
 
 console.log(`Finished in ${(end - start) / 1000} s`)
