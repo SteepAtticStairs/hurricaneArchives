@@ -49,12 +49,12 @@ function findName(row) {
             year = row[n];
         } else if (header[n] == 'SID') {
             SID = row[n];
-        } else if (header[n] == 'BASIN') {
+        }/* else if (header[n] == 'BASIN') {
             basin = row[n];
-        }
+        }*/
     }
     return {
-        'name': `${SID}-${name}-${year}-${basin}`,
+        'name': `${SID}-${name}-${year}`,
         'id': SID
     }
 }
@@ -75,8 +75,8 @@ for (var i = 0; i <= rows.length; i++) {
         curName = findRowResults.name;
         curID = findRowResults.id
 
-        if (!obj.hasOwnProperty(curName)) {
-            obj[curName] = [];
+        if (!obj.hasOwnProperty(curID)) {
+            obj[curID] = [];
         }
         var newObj = {};
         for (var n in curRow) {
@@ -84,8 +84,8 @@ for (var i = 0; i <= rows.length; i++) {
                 newObj[header[n]] = curRow[n];
             }
         }
-        obj[curName].push(newObj)
-        //fs.writeFileSync(`./storms/${curID}.json`, JSON.stringify(obj[curName]));
+        obj[curID].push(newObj)
+        //fs.writeFileSync(`./storms/${curID}.json`, JSON.stringify(obj[curID]));
     } catch (e) {
         //uugh
     }
